@@ -52,6 +52,7 @@ class TestIncidents(ParametrizedTestCase):
         body = {
             'startDate': '2017-03-13',
             'endDate': '2017-03-19',
+            'language': 'es-CO',
             'fields': ['hour', 'channel', 'risk'],
         }
         resp = self.call_incidents_api(body, token=token)
@@ -77,6 +78,7 @@ class TestIncidents(ParametrizedTestCase):
         body = {
             'startDate': '2017-03-13',
             'endDate': '2017-03-19',
+            'language': 'es-CO',
             'fields': ['hour', 'channel', 'risk'],
         }
         resp = self.call_incidents_api(body, token=None)
@@ -93,6 +95,7 @@ class TestIncidents(ParametrizedTestCase):
         body = {
             'startDate': self.faker.pystr(),
             'endDate': '2017-03-19',
+            'language': 'es-CO',
             'fields': ['hour', 'channel', 'risk'],
         }
         resp = self.call_incidents_api(body, token=token)
@@ -109,6 +112,7 @@ class TestIncidents(ParametrizedTestCase):
         body = {
             'startDate': '2017-03-13',
             'endDate': '2017-03-19',
+            'language': 'es-CO',
             'fields': ['hour', 'channel', 'risk'],
         }
 
