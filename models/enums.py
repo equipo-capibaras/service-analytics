@@ -26,6 +26,23 @@ class PartOfDayEnum(str, Enum):
     NIGHT = 'Night'
 
 
+class ProductTypeEnum(str, Enum):
+    SOFTWARE = 'Software'
+    HARDWARE = 'Hardware'
+    SERVICE = 'Service'
+    OTHER = 'Other'
+
+
+class DayOfWeekEnum(str, Enum):
+    MONDAY = 'Monday'
+    TUESDAY = 'Tuesday'
+    WEDNESDAY = 'Wednesday'
+    THURSDAY = 'Thursday'
+    FRIDAY = 'Friday'
+    SATURDAY = 'Saturday'
+    SUNDAY = 'Sunday'
+
+
 class ScalingLevelEnum(int, Enum):
     LEVEL_1 = 1
     LEVEL_2 = 2

@@ -1,6 +1,8 @@
 # mypy: ignore-errors
 from db import db
 
+from .enums import DayOfWeekEnum
+
 
 class Date(db.Model):
     __tablename__ = 'date'
@@ -11,4 +13,4 @@ class Date(db.Model):
     month = db.Column(db.Integer, nullable=False)
     quarter = db.Column(db.Integer, nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    day_of_week = db.Column(db.String(50), nullable=False)
+    day_of_week = db.Column(db.Enum(DayOfWeekEnum), nullable=False)

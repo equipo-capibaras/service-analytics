@@ -6,7 +6,7 @@ class User(db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.String(36), primary_key=True, nullable=False)
-    name = db.Column(db.String(80), nullable=False)
+    name = db.Column(db.String(250), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     sex = db.Column(db.String(10), nullable=False)
     city = db.Column(db.String(80), nullable=False)

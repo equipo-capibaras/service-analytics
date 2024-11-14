@@ -5,6 +5,8 @@ from .enums import PartOfDayEnum
 
 
 class Time(db.Model):
+    __tablename__ = 'time'
+
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     hour = db.Column(db.Integer, nullable=False)
     minute = db.Column(db.Integer, nullable=False)
