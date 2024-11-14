@@ -17,10 +17,10 @@ class IncidentAnalytics(db.Model):
     product_name = db.Column(db.String(80), nullable=False)
     product_type = db.Column(db.String(80), nullable=False)
     product_description = db.Column(db.String(500), nullable=False)
-    date_day = db.Column(db.Integer, nullable=False)
-    date_month = db.Column(db.Integer, nullable=False)
-    date_quarter = db.Column(db.Integer, nullable=False)
-    date_year = db.Column(db.Integer, nullable=False)
+    date_day = db.Column(db.String(36), nullable=False)
+    date_month = db.Column(db.String(36), nullable=False)
+    date_quarter = db.Column(db.String(36), nullable=False)
+    date_year = db.Column(db.String(36), nullable=False)
     date_day_of_week = db.Column(db.String(50), nullable=False)
     time_hour = db.Column(db.Integer, nullable=False)
     time_minute = db.Column(db.Integer, nullable=False)
@@ -30,4 +30,4 @@ class IncidentAnalytics(db.Model):
     agent_experience = db.Column(db.Integer, nullable=False)
     channel_type = db.Column(db.String(80), nullable=False)
     scaling_level = db.Column(db.Integer, nullable=False)
-    resolution_time = db.Column(db.Integer, nullable=False)  # in days
+    resolution_time = db.Column(db.Integer, nullable=False)  # in hours
