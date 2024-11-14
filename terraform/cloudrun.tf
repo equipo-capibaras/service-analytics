@@ -37,6 +37,16 @@ resource "google_cloud_run_v2_service" "default" {
         value = "1"
       }
 
+      env {
+        name = "CLOUDSQL_INSTANCE"
+        value = google_sql_database_instance.datawarehouse.connection_name
+      }
+
+      env {
+        name = "CLOUDSQL_DB"
+        value = "abcall"
+      }
+
       startup_probe {
         http_get {
           path = "/api/v1/health/${local.service_name}"
