@@ -19,6 +19,14 @@ class GeneratorUserRepository(UserRepository):
         users = []
         for _ in range(entries):
             ubication = get_random_ubication()
+
+            # Generar initial_date y final_date con un rango coherente
+            initial_date = self.faker.date_this_decade(before_today=True)
+            final_date = self.faker.date_between_dates(
+                date_start=initial_date,
+                date_end=self.faker.date_this_decade(before_today=False),
+            )
+
             user = User(
                 id=str(uuid4()),
                 name=self.faker.name(),
@@ -28,14 +36,8 @@ class GeneratorUserRepository(UserRepository):
                 country=ubication['country'],
                 continent=ubication['continent'],
                 language=get_random_languaje(),
-                initial_date=self.faker.date_between_dates(
-                    date_start=self.faker.date_this_decade(before_today=True),
-                    date_end=self.faker.date_this_decade(before_today=True),
-                ),
-                final_date=self.faker.date_between_dates(
-                    date_start=self.faker.date_this_decade(before_today=False),
-                    date_end=self.faker.date_this_decade(before_today=False),
-                ),
+                initial_date=initial_date,
+                final_date=final_date,
             )
             users.append(user)
 
