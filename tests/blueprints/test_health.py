@@ -5,7 +5,7 @@ from app import create_app
 
 class TestHealth(TestCase):
     def setUp(self) -> None:
-        app = create_app()
+        app = create_app(database_uri='sqlite:///:memory:')
         self.client = app.test_client()
 
     def test_health(self) -> None:
