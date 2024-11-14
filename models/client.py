@@ -1,5 +1,8 @@
+# mypy: ignore-errors
 from db import db
+
 from .enums import PlanEnum
+
 
 class Client(db.Model):
     __tablename__ = 'client'

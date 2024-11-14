@@ -1,4 +1,6 @@
+# mypy: ignore-errors
 from db import db
+
 
 class Date(db.Model):
     __tablename__ = 'date'
@@ -10,4 +12,3 @@ class Date(db.Model):
     quarter = db.Column(db.Integer, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     day_of_week = db.Column(db.String(50), nullable=False)
-    

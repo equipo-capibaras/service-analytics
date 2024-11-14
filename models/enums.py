@@ -1,25 +1,30 @@
 from enum import Enum
 
+
 class PlanEnum(str, Enum):
     EMPRENDEDOR = 'Emprendedor'
     EMPRESARIO = 'Empresario'
     EMPRESARIO_PLUS = 'Empresario Plus'
+
 
 class RiskLevelEnum(str, Enum):
     LOW = 'Low'
     MEDIUM = 'Medium'
     HIGH = 'High'
 
+
 class ChannelEnum(str, Enum):
     EMAIL = 'Email'
     WEB = 'Web'
     Mobile = 'Mobile'
+
 
 class PartOfDayEnum(str, Enum):
     MORNING = 'Morning'
     MIDDAY = 'Midday'
     AFTERNOON = 'Afternoon'
     NIGHT = 'Night'
+
 
 class ScalingLevelEnum(int, Enum):
     SCALED_1 = 1

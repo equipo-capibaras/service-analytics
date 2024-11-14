@@ -1,13 +1,13 @@
 from .agent import Agent
-from .enums import PlanEnum, RiskLevelEnum, ChannelEnum, ScalingLevelEnum, PartOfDayEnum
-from .client import Client
-from .product import Product
-from .date import Date
-from .time import Time
-from .risk import Risk
 from .channel import Channel
-from .user import User
+from .client import Client
+from .date import Date
+from .enums import ChannelEnum, PartOfDayEnum, PlanEnum, RiskLevelEnum, ScalingLevelEnum
 from .incident_fact import IncidentFact
+from .product import Product
+from .risk import Risk
+from .time import Time
+from .user import User
 
 __all__ = [
     'Agent',
@@ -23,5 +23,5 @@ __all__ = [
     'Risk',
     'Channel',
     'User',
-    'IncidentFact'
+    'IncidentFact',
 ]

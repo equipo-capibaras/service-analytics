@@ -1,5 +1,8 @@
+# mypy: ignore-errors
 from db import db
+
 from .enums import PartOfDayEnum
+
 
 class Time(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)

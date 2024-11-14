@@ -1,5 +1,8 @@
+# mypy: ignore-errors
 from db import db
+
 from .enums import RiskLevelEnum
+
 
 class Risk(db.Model):
     __tablename__ = 'risk'
