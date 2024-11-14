@@ -27,13 +27,13 @@ class PartOfDayEnum(str, Enum):
 
 
 class ScalingLevelEnum(int, Enum):
-    SCALED_1 = 1
-    SCALED_2 = 2
-    SCALED_3 = 3
-    SCALED_4 = 4
-    SCALED_5 = 5
-    SCALED_6 = 6
-    SCALED_7 = 7
-    SCALED_8 = 8
-    SCALED_9 = 9
-    SCALED_10 = 10
+    LEVEL_1 = 1
+    LEVEL_2 = 2
+    LEVEL_3 = 3
+    LEVEL_4 = 4
+    LEVEL_5 = 5
+    LEVEL_6 = 6
+    LEVEL_7 = 7
+    LEVEL_8 = 8
+    LEVEL_9 = 9
+    LEVEL_10 = 10
