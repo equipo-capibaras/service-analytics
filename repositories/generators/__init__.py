@@ -1,6 +1,13 @@
 from .client import GeneratorClientRepository
 from .date import GeneratorDateRepository
 from .product import GeneratorProductRepository
+from .time import GeneratorTimeRepository
 from .user import GeneratorUserRepository
 
-__all__ = ['GeneratorUserRepository', 'GeneratorClientRepository', 'GeneratorProductRepository', 'GeneratorDateRepository']
+__all__ = [
+    'GeneratorUserRepository',
+    'GeneratorClientRepository',
+    'GeneratorProductRepository',
+    'GeneratorDateRepository',
+    'GeneratorTimeRepository',
+]

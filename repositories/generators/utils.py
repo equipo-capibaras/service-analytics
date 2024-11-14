@@ -3,7 +3,7 @@ from typing import Any
 
 from faker import Faker
 
-from demo import continent_contry_city_list
+from demo import continent_contry_city_list, time_list
 
 faker = Faker()
 
@@ -19,6 +19,15 @@ def get_random_sex() -> str:
 
 def get_random_languaje() -> str:
     return secrets.choice(['es', 'en', 'pt'])
+
+
+def get_random_time() -> dict[str, Any]:
+    time = secrets.choice(time_list)
+    return {'id': time['id'], 'hour': time['hour'], 'minute': time['minute'], 'part_of_day': time['part_of_day']}
+
+
+def count_time() -> int:
+    return len(time_list)
 
 
 def get_initial_final_date() -> dict[str, Any]:

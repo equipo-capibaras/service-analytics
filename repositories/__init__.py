@@ -1,6 +1,7 @@
 from .client import ClientRepository
 from .date import DateRepository
 from .product import ProductRepository
+from .time import TimeRepository
 from .user import UserRepository
 
 __all__ = [
@@ -8,4 +9,5 @@ __all__ = [
     'ClientRepository',
     'ProductRepository',
     'DateRepository',
+    'TimeRepository',
 ]

@@ -19,13 +19,6 @@ class ChannelEnum(str, Enum):
     Mobile = 'Mobile'
 
 
-class PartOfDayEnum(str, Enum):
-    MORNING = 'Morning'
-    MIDDAY = 'Midday'
-    AFTERNOON = 'Afternoon'
-    NIGHT = 'Night'
-
-
 class ProductTypeEnum(str, Enum):
     SOFTWARE = 'Software'
     HARDWARE = 'Hardware'
