@@ -1,12 +1,12 @@
 from .agent import GeneratorAgentRepository
+from .channel import GeneratorChannelRepository
 from .client import GeneratorClientRepository
 from .date import GeneratorDateRepository
+from .incident_analytics import GeneratorIncidentAnalyticsRepository
 from .product import GeneratorProductRepository
 from .risk import GeneratorRiskRepository
 from .time import GeneratorTimeRepository
 from .user import GeneratorUserRepository
-from .incident_analytics import GeneratorIncidentAnalyticsRepository
-from .channel import GeneratorChannelRepository
 
 __all__ = [
     'GeneratorUserRepository',
@@ -17,5 +17,5 @@ __all__ = [
     'GeneratorRiskRepository',
     'GeneratorAgentRepository',
     'GeneratorChannelRepository',
-    'GeneratorIncidentAnalyticsRepository'
+    'GeneratorIncidentAnalyticsRepository',
 ]

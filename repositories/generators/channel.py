@@ -1,10 +1,11 @@
-from repositories import ChannelRepository
-from models import Channel
-
 import secrets
 from uuid import uuid4
+
 from db import db
+from models import Channel
 from models.enums import ChannelEnum
+from repositories import ChannelRepository
+
 
 class GeneratorChannelRepository(ChannelRepository):
     def __init__(self) -> None:

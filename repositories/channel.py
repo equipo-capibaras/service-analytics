@@ -1,5 +1,6 @@
 from models import Channel
 
+
 class ChannelRepository:
     def populate_table(self) -> None:
         raise NotImplementedError  # pragma: no cover

@@ -1,12 +1,12 @@
 from .agent import AgentRepository
+from .channel import ChannelRepository
 from .client import ClientRepository
 from .date import DateRepository
+from .incident_analytics import IncidentAnalyticsRepository
 from .product import ProductRepository
 from .risk import RiskRepository
 from .time import TimeRepository
 from .user import UserRepository
-from .incident_analytics import IncidentAnalyticsRepository
-from .channel import ChannelRepository
 
 __all__ = [
     'UserRepository',
@@ -17,5 +17,5 @@ __all__ = [
     'RiskRepository',
     'AgentRepository',
     'IncidentAnalyticsRepository',
-    'ChannelRepository'
+    'ChannelRepository',
 ]

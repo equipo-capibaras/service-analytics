@@ -4,8 +4,9 @@ from faker import Faker
 
 from app import create_app
 from db import db
-from models import  Channel
+from models import Channel
 from repositories.generators import GeneratorChannelRepository
+
 
 class TestChannelRepository(TestCase):
     def setUp(self) -> None:
