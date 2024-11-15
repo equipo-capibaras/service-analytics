@@ -1,3 +1,4 @@
+from .agent import AgentRepository
 from .client import ClientRepository
 from .date import DateRepository
 from .product import ProductRepository
@@ -12,4 +13,5 @@ __all__ = [
     'DateRepository',
     'TimeRepository',
     'RiskRepository',
+    'AgentRepository',
 ]

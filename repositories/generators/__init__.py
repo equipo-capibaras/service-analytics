@@ -1,3 +1,4 @@
+from .agent import GeneratorAgentRepository
 from .client import GeneratorClientRepository
 from .date import GeneratorDateRepository
 from .product import GeneratorProductRepository
@@ -12,4 +13,5 @@ __all__ = [
     'GeneratorDateRepository',
     'GeneratorTimeRepository',
     'GeneratorRiskRepository',
+    'GeneratorAgentRepository',
 ]
