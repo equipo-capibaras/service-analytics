@@ -16,7 +16,7 @@ class RiskLevelEnum(str, Enum):
 class ChannelEnum(str, Enum):
     EMAIL = 'Email'
     WEB = 'Web'
-    Mobile = 'Mobile'
+    MOBILE = 'Mobile'
 
 
 class ProductTypeEnum(str, Enum):

@@ -5,6 +5,8 @@ from .product import GeneratorProductRepository
 from .risk import GeneratorRiskRepository
 from .time import GeneratorTimeRepository
 from .user import GeneratorUserRepository
+from .incident_analytics import GeneratorIncidentAnalyticsRepository
+from .channel import GeneratorChannelRepository
 
 __all__ = [
     'GeneratorUserRepository',
@@ -14,4 +16,6 @@ __all__ = [
     'GeneratorTimeRepository',
     'GeneratorRiskRepository',
     'GeneratorAgentRepository',
+    'GeneratorChannelRepository',
+    'GeneratorIncidentAnalyticsRepository'
 ]
