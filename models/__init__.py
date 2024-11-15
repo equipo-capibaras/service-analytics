@@ -7,6 +7,7 @@ from .incident_analytics import IncidentAnalytics
 from .incident_fact import IncidentFact
 from .product import Product
 from .risk import Risk
+from .role import Role
 from .time import Time
 from .user import User
 
@@ -27,4 +28,5 @@ __all__ = [
     'ProductTypeEnum',
     'DayOfWeekEnum',
     'IncidentAnalytics',
+    'Role',
 ]
