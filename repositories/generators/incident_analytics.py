@@ -1,3 +1,4 @@
+from typing import Any
 from uuid import uuid4
 
 from faker import Faker
@@ -110,3 +111,33 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
 
     def get_incidents(self) -> list[IncidentAnalytics]:
         return self.db.session.query(IncidentAnalytics).all()
+
+    def incident_to_dict(self, incident: IncidentAnalytics) -> dict[str, Any]:
+        return {
+            'id': incident.id,
+            'user_name': incident.user_name,
+            'user_age': incident.user_age,
+            'user_city': incident.user_city,
+            'user_country': incident.user_country,
+            'user_continent': incident.user_continent,
+            'user_language': incident.user_language,
+            'client_name': incident.client_name,
+            'client_plan': incident.client_plan,
+            'product_name': incident.product_name,
+            'product_type': incident.product_type,
+            'product_description': incident.product_description,
+            'date_day': incident.date_day,
+            'date_month': incident.date_month,
+            'date_quarter': incident.date_quarter,
+            'date_year': incident.date_year,
+            'date_day_of_week': incident.date_day_of_week,
+            'time_hour': incident.time_hour,
+            'time_minute': incident.time_minute,
+            'time_part_of_day': incident.time_part_of_day,
+            'risk_level': incident.risk_level,
+            'agent_name': incident.agent_name,
+            'agent_experience': incident.agent_experience,
+            'channel_type': incident.channel_type,
+            'scaling_level': incident.scaling_level,
+            'resolution_time': incident.resolution_time,
+        }
