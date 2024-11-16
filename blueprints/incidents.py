@@ -49,8 +49,6 @@ class IncidentAnalytics(MethodView):
             return validation_error_response(err)
 
         incidents = incident_repo.get_incidents()
-        if not incidents:
-            return error_response('No incidents found, please populate the tables', 404)
 
         current_app.logger.info('Client: %s', token['cid'])
 

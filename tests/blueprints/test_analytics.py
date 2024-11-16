@@ -149,11 +149,8 @@ class TestIncidents(ParametrizedTestCase):
 
         resp = self.call_incidents_api(body, token=token)
 
-        self.assertEqual(resp.status_code, 404)
-        resp_data = json.loads(resp.get_data())
-
-        self.assertEqual(resp_data['code'], 404)
-        self.assertEqual(resp_data['message'], 'No incidents found, please populate the tables')
+        self.assertEqual(resp.status_code, 200)
+        
 
     def test_populate_invalid_json(self) -> None:
         body = 'invalid json'
