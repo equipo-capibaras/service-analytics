@@ -4,7 +4,6 @@ from .client import Client
 from .date import Date
 from .enums import ChannelEnum, DayOfWeekEnum, PlanEnum, ProductTypeEnum, RiskLevelEnum, ScalingLevelEnum
 from .incident_analytics import IncidentAnalytics
-from .incident_fact import IncidentFact
 from .product import Product
 from .risk import Risk
 from .role import Role
@@ -24,7 +23,6 @@ __all__ = [
     'Risk',
     'Channel',
     'User',
-    'IncidentFact',
     'ProductTypeEnum',
     'DayOfWeekEnum',
     'IncidentAnalytics',
