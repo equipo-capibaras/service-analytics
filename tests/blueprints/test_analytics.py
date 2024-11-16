@@ -151,7 +151,6 @@ class TestIncidents(ParametrizedTestCase):
 
         self.assertEqual(resp.status_code, 200)
 
-
     def test_populate_invalid_json(self) -> None:
         body = 'invalid json'
         resp = self.call_populate_api(body)

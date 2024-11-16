@@ -1,8 +1,8 @@
 import secrets
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from faker import Faker
-from datetime import datetime
 
 from db import db
 from models import Date
@@ -17,8 +17,8 @@ class GeneratorDateRepository:
     def populate_table(self, entries: int) -> None:
         dates = []
 
-        start_date = datetime(2024, 9, 1)
-        end_date = datetime(2024, 11, 30)
+        start_date = datetime(2024, 9, 1, tzinfo=UTC)
+        end_date = datetime(2024, 11, 30, tzinfo=UTC)
 
         for _ in range(entries):
             generated_date = self.faker.date_between(start_date=start_date, end_date=end_date)
