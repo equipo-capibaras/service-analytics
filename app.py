@@ -38,9 +38,6 @@ def create_app(database_uri: str | None = None) -> FlaskMicroservice:
 
     db.init_app(app)
 
-    with app.app_context():
-        db.create_all()
-
     app.register_blueprint(BlueprintHealth)
     app.register_blueprint(BlueprintIncidents)
 
