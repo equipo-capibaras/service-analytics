@@ -2,6 +2,7 @@ import secrets
 from uuid import uuid4
 
 from faker import Faker
+from datetime import datetime
 
 from db import db
 from models import Date
@@ -16,14 +17,18 @@ class GeneratorDateRepository:
     def populate_table(self, entries: int) -> None:
         dates = []
 
+        start_date = datetime(2024, 9, 1)
+        end_date = datetime(2024, 11, 30)
+
         for _ in range(entries):
+            generated_date = self.faker.date_between(start_date=start_date, end_date=end_date)
             date = Date(
                 id=str(uuid4()),
-                date=self.faker.date_this_decade(),
-                day=self.faker.day_of_month(),
-                month=self.faker.month(),
-                quarter=self.faker.random_int(min=1, max=4),
-                year=self.faker.year(),
+                date=generated_date,
+                day=str(generated_date.day).zfill(2),
+                month=str(generated_date.month).zfill(2),
+                quarter=(generated_date.month - 1) // 3 + 1,
+                year=str(generated_date.year),
                 day_of_week=secrets.choice(
                     [
                         DayOfWeekEnum.MONDAY.value,

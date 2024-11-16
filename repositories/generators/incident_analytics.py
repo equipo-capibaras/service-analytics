@@ -2,7 +2,7 @@ from typing import Any
 from uuid import uuid4
 
 from faker import Faker
-
+from sqlalchemy import and_, case, func
 from db import db
 from models import IncidentAnalytics
 from repositories import IncidentAnalyticsRepository
@@ -116,13 +116,29 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             )
             incidents.append(incident)
 
+
         # Agregar todos los incidentes generados a la base de datos
         self.db.session.add_all(incidents)
         self.db.session.commit()
 
-    def get_incidents(self) -> list[dict[str, Any]]:
-        # Obtener todos los incidentes y devolverlos en formato dict
-        incidents = self.db.session.query(IncidentAnalytics).all()
+    def get_incidents(self, start_date: str, end_date: str) -> list[dict[str, Any]]:
+        # Extraer los componentes de las fechas de inicio y fin
+        start_year, start_month, start_day = start_date[:4], start_date[4:6], start_date[6:]
+        end_year, end_month, end_day = end_date[:4], end_date[4:6], end_date[6:]
+
+        # Filtrar los incidentes según el rango de fechas usando comparaciones de cada componente
+        incidents = self.db.session.query(IncidentAnalytics).filter(
+            and_(
+                IncidentAnalytics.date_year >= start_year,
+                IncidentAnalytics.date_year <= end_year,
+                IncidentAnalytics.date_month >= start_month,
+                IncidentAnalytics.date_month <= end_month,
+                IncidentAnalytics.date_day >= start_day,
+                IncidentAnalytics.date_day <= end_day
+            )
+        ).all()
+
+
         return [self.incident_to_dict(incident) for incident in incidents]
 
     def incident_to_dict(self, incident: IncidentAnalytics) -> dict[str, Any]:

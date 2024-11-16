@@ -48,7 +48,11 @@ class IncidentAnalytics(MethodView):
         except ValidationError as err:
             return validation_error_response(err)
 
-        incidents = incident_repo.get_incidents()
+        # Get incidents from the repository based on the start and end dates
+        incidents = incident_repo.get_incidents(
+            start_date=data.startDate.strftime("%Y%m%d"),
+            end_date=data.endDate.strftime("%Y%m%d")
+        )
 
         current_app.logger.info('Client: %s', token['cid'])
 
