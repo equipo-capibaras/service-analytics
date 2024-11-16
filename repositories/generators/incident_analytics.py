@@ -21,6 +21,8 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
     def __init__(self) -> None:
         self.faker = Faker()
         self.db = db
+
+        # Repositorios necesarios para obtener datos de entidades relacionadas
         self.agent_repo = GeneratorAgentRepository()
         self.client_repo = GeneratorClientRepository()
         self.date_repo = GeneratorDateRepository()
@@ -29,44 +31,51 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.time_repo = GeneratorTimeRepository()
         self.user_repo = GeneratorUserRepository()
         self.channel_repo = GeneratorChannelRepository()
+
+        # Configuración para el número de entidades a generar
         self.TOTAL_AGENTS = 20
         self.TOTAL_CLIENTS = 10
-        self.TOTAL_DATES = 10
         self.TOTAL_PRODUCTS = 10
         self.TOTAL_USERS = 400
+        self.TOTAL_DATES = 10
 
     def populate_tables(self, entries: int) -> None:
+        # Llenar las tablas de referencia
         self.agent_repo.populate_table(self.TOTAL_AGENTS)
         self.client_repo.populate_table(self.TOTAL_CLIENTS)
-        self.date_repo.populate_table(entries)
         self.product_repo.populate_table(self.TOTAL_PRODUCTS)
+        self.user_repo.populate_table(self.TOTAL_USERS)
+        self.date_repo.populate_table(entries)
         self.risk_repo.populate_table()
         self.time_repo.populate_table()
-        self.user_repo.populate_table(self.TOTAL_USERS)
         self.channel_repo.populate_table()
 
     def delete_all_incident_analytics(self) -> None:
+        # Eliminar todos los registros de incidentes analíticos
         self.db.session.query(IncidentAnalytics).delete()
         self.db.session.commit()
 
     def clear_tables(self) -> None:
+        # Limpiar todos los datos de las tablas
         self.delete_all_incident_analytics()
         self.agent_repo.delete_all_agents()
         self.client_repo.delete_all_clients()
-        self.date_repo.delete_all_dates()
         self.product_repo.delete_all_products()
+        self.user_repo.delete_all_users()
+        self.date_repo.delete_all_dates()
         self.risk_repo.delete_all_risks()
         self.time_repo.delete_all_times()
-        self.user_repo.delete_all_users()
         self.channel_repo.delete_all_channels()
 
     def populate_incidents(self, entries: int) -> None:
+        # Llenar los incidentes analíticos
         self.clear_tables()
         self.populate_tables(entries)
 
         incidents = []
 
         for _ in range(entries):
+            # Obtener datos aleatorios para los incidentes
             user = self.user_repo.get_random_user()
             client = self.client_repo.get_random_client()
             product = self.product_repo.get_random_product()
@@ -76,6 +85,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             agent = self.agent_repo.get_random_agent()
             channel = self.channel_repo.get_random_channel()
 
+            # Crear un nuevo incidente analítico
             incident = IncidentAnalytics(
                 id=str(uuid4()),
                 user_name=user.name,
@@ -102,42 +112,28 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
                 agent_experience=agent.experience,
                 channel_type=channel.channel_type.value,
                 scaling_level=self.faker.random_int(min=1, max=10),
-                resolution_time=self.faker.random_int(min=1, max=100),
+                resolution_time=self.faker.random_int(min=1, max=30),
             )
             incidents.append(incident)
 
+        # Agregar todos los incidentes generados a la base de datos
         self.db.session.add_all(incidents)
         self.db.session.commit()
 
-    def get_incidents(self) -> list[IncidentAnalytics]:
-        return self.db.session.query(IncidentAnalytics).all()
+    def get_incidents(self) -> list[dict[str, Any]]:
+        # Obtener todos los incidentes y devolverlos en formato dict
+        incidents = self.db.session.query(IncidentAnalytics).all()
+        return [self.incident_to_dict(incident) for incident in incidents]
 
     def incident_to_dict(self, incident: IncidentAnalytics) -> dict[str, Any]:
+        # Convertir un incidente a un formato de diccionario
         return {
-            'id': incident.id,
-            'user_name': incident.user_name,
-            'user_age': incident.user_age,
-            'user_city': incident.user_city,
-            'user_country': incident.user_country,
-            'user_continent': incident.user_continent,
-            'user_language': incident.user_language,
-            'client_name': incident.client_name,
-            'client_plan': incident.client_plan,
-            'product_name': incident.product_name,
-            'product_type': incident.product_type,
-            'product_description': incident.product_description,
-            'date_day': incident.date_day,
-            'date_month': incident.date_month,
-            'date_quarter': incident.date_quarter,
-            'date_year': incident.date_year,
-            'date_day_of_week': incident.date_day_of_week,
-            'time_hour': incident.time_hour,
-            'time_minute': incident.time_minute,
-            'time_part_of_day': incident.time_part_of_day,
-            'risk_level': incident.risk_level,
-            'agent_name': incident.agent_name,
-            'agent_experience': incident.agent_experience,
-            'channel_type': incident.channel_type,
-            'scaling_level': incident.scaling_level,
+            'date': incident.date_year + incident.date_month.zfill(2) + incident.date_day.zfill(2),
+            'hour': str(incident.time_hour).zfill(2),
+            'channel': incident.channel_type,
+            'risk': incident.risk_level,
+            'escalations': incident.scaling_level,
             'resolution_time': incident.resolution_time,
+            'product_name': incident.product_name,
+            'agent_name': incident.agent_name,
         }

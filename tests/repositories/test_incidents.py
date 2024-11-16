@@ -32,6 +32,7 @@ class TestIncidentAnalyticsRepository(TestCase):
 
         # Verificamos que haya 10 entradas en la tabla de IncidentAnalytics
         incidents = db.session.query(IncidentAnalytics).all()
+
         self.assertEqual(len(incidents), 10, f'Expected 10 incidents, but found {len(incidents)}')
 
     def test_delete_all_incident_analytics(self) -> None:
