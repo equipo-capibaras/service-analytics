@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Any
 from uuid import uuid4
 
@@ -38,7 +39,6 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.TOTAL_CLIENTS = 10
         self.TOTAL_PRODUCTS = 10
         self.TOTAL_USERS = 400
-        self.TOTAL_DATES = 10
 
     def populate_tables(self, entries: int) -> None:
         # Llenar las tablas de referencia
@@ -80,7 +80,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             user = self.user_repo.get_random_user()
             client = self.client_repo.get_random_client()
             product = self.product_repo.get_random_product()
-            date = self.date_repo.get_random_date()
+            date_object = self.date_repo.get_random_date()
             time = self.time_repo.get_random_time()
             risk = self.risk_repo.get_random_risk()
             agent = self.agent_repo.get_random_agent()
@@ -100,11 +100,12 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
                 product_name=product.name,
                 product_type=product.type.value,
                 product_description=product.description,
-                date_day=date.day,
-                date_month=date.month,
-                date_quarter=date.quarter,
-                date_year=date.year,
-                date_day_of_week=date.day_of_week.value,
+                date=date_object.date,
+                date_day=date_object.day,
+                date_month=date_object.month,
+                date_quarter=date_object.quarter,
+                date_year=date_object.year,
+                date_day_of_week=date_object.day_of_week.value,
                 time_hour=time.hour,
                 time_minute=time.minute,
                 time_part_of_day=time.part_of_day,
@@ -121,22 +122,14 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.db.session.add_all(incidents)
         self.db.session.commit()
 
-    def get_incidents(self, start_date: str, end_date: str) -> list[dict[str, Any]]:
-        # Extraer los componentes de las fechas de inicio y fin
-        start_year, start_month, start_day = start_date[:4], start_date[4:6], start_date[6:]
-        end_year, end_month, end_day = end_date[:4], end_date[4:6], end_date[6:]
-
-        # Filtrar los incidentes según el rango de fechas usando comparaciones de cada componente
+    def get_incidents(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
+        # Filtrar los incidentes según el rango de fechas usando comparaciones directas
         incidents = (
             self.db.session.query(IncidentAnalytics)
             .filter(
                 and_(
-                    IncidentAnalytics.date_year >= start_year,
-                    IncidentAnalytics.date_year <= end_year,
-                    IncidentAnalytics.date_month >= start_month,
-                    IncidentAnalytics.date_month <= end_month,
-                    IncidentAnalytics.date_day >= start_day,
-                    IncidentAnalytics.date_day <= end_day,
+                    IncidentAnalytics.date >= start_date,
+                    IncidentAnalytics.date <= end_date,
                 )
             )
             .all()
