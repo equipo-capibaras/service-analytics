@@ -16,6 +16,43 @@ from .util import class_route, error_response, json_response, requires_token, va
 blp = Blueprint('Analytics Incidents', __name__)
 
 
+CHANNEL_I18N = {
+    'es-CO': {
+        'Email': 'Correo',
+        'Web': 'Web',
+        'Mobile': 'Móvil',
+    },
+    'es-AR': {
+        'Email': 'Correo',
+        'Web': 'Web',
+        'Mobile': 'Móvil',
+    },
+    'pt-BR': {
+        'Email': 'E-mail',
+        'Web': 'Web',
+        'Mobile': 'Celular',
+    },
+}
+
+RISK_I18N = {
+    'es-CO': {
+        'Low': 'Bajo',
+        'Medium': 'Medio',
+        'High': 'Alto',
+    },
+    'es-AR': {
+        'Low': 'Bajo',
+        'Medium': 'Medio',
+        'High': 'Alto',
+    },
+    'pt-BR': {
+        'Low': 'Baixo',
+        'Medium': 'Médio',
+        'High': 'Alto',
+    },
+}
+
+
 @dataclass
 class AnalyticsBody:
     startDate: date  # noqa: N815
@@ -52,6 +89,10 @@ class IncidentAnalytics(MethodView):
         incidents = incident_repo.get_incidents(start_date=data.startDate, end_date=data.endDate)
 
         current_app.logger.info('Client: %s', token['cid'])
+
+        for row in incidents:
+            row['risk'] = RISK_I18N[data.language][row['risk']]
+            row['channel'] = CHANNEL_I18N[data.language][row['channel']]
 
         rows = [{'values': [row[incident_field] for incident_field in data.fields]} for row in incidents]
 
