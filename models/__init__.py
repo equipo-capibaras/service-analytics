@@ -10,6 +10,7 @@ from .role import Role
 from .time import Time
 from .user import User
 
+# Expose the classes to the package - Fixed
 __all__ = [
     'Agent',
     'PlanEnum',
