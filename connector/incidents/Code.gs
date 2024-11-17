@@ -94,7 +94,7 @@ function getData(request) {
 
   var post_data = {
     'startDate': request.dateRange.startDate,
-    'endDate': request.dateRange.startDate,
+    'endDate': request.dateRange.endDate,
     'language': request.configParams['language'],
     'fields': requestedFieldIds
   };
