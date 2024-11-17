@@ -17,6 +17,7 @@ class IncidentAnalytics(db.Model):
     product_name = db.Column(db.String(80), nullable=False)
     product_type = db.Column(db.String(80), nullable=False)
     product_description = db.Column(db.String(500), nullable=False)
+    date = db.Column(db.Date, nullable=False)
     date_day = db.Column(db.String(36), nullable=False)
     date_month = db.Column(db.String(36), nullable=False)
     date_quarter = db.Column(db.String(36), nullable=False)
