@@ -18,7 +18,7 @@ def get_random_sex() -> str:
 
 
 def get_random_languaje() -> str:
-    return secrets.choice(['es', 'en', 'pt'])
+    return secrets.choice(['Portugués (Brasil)', 'Español (Colombia)', 'Español (Argentina)'])
 
 
 def get_random_time() -> dict[str, Any]:
