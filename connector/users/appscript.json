@@ -1,0 +1,16 @@
+{
+  "timeZone": "Etc/UTC",
+  "dependencies": {},
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+
+  "dataStudio": {
+    "name": "ABCall - Users",
+    "logoUrl": "https://capibaras.io/logo40.png",
+    "company": "Equipo Capibaras",
+    "companyUrl": "https://capibaras.io/",
+    "addonUrl": "https://github.com/equipo-capibaras/service-analytics",
+    "supportUrl": "https://github.com/equipo-capibaras/service-analytics/issues",
+    "description": "Gets analytical data from the ABCall platform about the users reporting incidents."
+  }
+}
