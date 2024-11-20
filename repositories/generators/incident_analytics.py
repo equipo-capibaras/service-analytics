@@ -17,6 +17,7 @@ from .product import GeneratorProductRepository
 from .risk import GeneratorRiskRepository
 from .time import GeneratorTimeRepository
 from .user import GeneratorUserRepository
+from .utils import get_random_age_range
 
 
 class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
@@ -89,8 +90,10 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             # Crear un nuevo incidente analítico
             incident = IncidentAnalytics(
                 id=str(uuid4()),
+                user_id=user.id,
                 user_name=user.name,
                 user_age=user.age,
+                user_age_range=get_random_age_range(),
                 user_city=user.city,
                 user_country=user.country,
                 user_continent=user.continent,
@@ -115,6 +118,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
                 channel_type=channel.channel_type.value,
                 scaling_level=self.faker.random_int(min=1, max=10),
                 resolution_time=self.faker.random_int(min=1, max=30),
+                satisfaction=self.faker.random_int(min=1, max=10),
             )
             incidents.append(incident)
 
@@ -122,7 +126,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.db.session.add_all(incidents)
         self.db.session.commit()
 
-    def get_incidents(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
+    def get_all(self, start_date: date, end_date: date) -> list[IncidentAnalytics]:
         # Filtrar los incidentes según el rango de fechas usando comparaciones directas
         incidents = (
             self.db.session.query(IncidentAnalytics)
@@ -135,7 +139,19 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             .all()
         )
 
+        return incidents
+
+    def get_incidents(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
+        # Filtrar los incidentes según el rango de fechas usando comparaciones directas
+        incidents = self.get_all(start_date, end_date)
+
         return [self.incident_to_dict(incident) for incident in incidents]
+
+    def get_users(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
+        # Filtrar los usuarios según el rango de fechas usando comparaciones directas
+        users = self.get_all(start_date, end_date)
+
+        return [self.user_to_dict(user) for user in users]
 
     def incident_to_dict(self, incident: IncidentAnalytics) -> dict[str, Any]:
         # Convertir un incidente a un formato de diccionario
@@ -148,4 +164,16 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             'resolution_time': incident.resolution_time,
             'product_name': incident.product_name,
             'agent_name': incident.agent_name,
+        }
+
+    def user_to_dict(self, incident: IncidentAnalytics) -> dict[str, Any]:
+        # convertir un usuario a un formato de diccionario
+        return {
+            'userId': incident.user_id,
+            'age': incident.user_age_range,
+            'language': incident.user_language,
+            'country': incident.user_country,
+            'channel': incident.channel_type,
+            'product': incident.product_name,
+            'satisfaction': round(float(incident.satisfaction), 1),
         }

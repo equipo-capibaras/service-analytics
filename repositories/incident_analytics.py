@@ -19,3 +19,12 @@ class IncidentAnalyticsRepository:
 
     def incident_to_dict(self, incident: IncidentAnalytics) -> dict[str, Any]:
         raise NotImplementedError  # pragma: no cover
+
+    def user_to_dict(self, incident: IncidentAnalytics) -> dict[str, Any]:
+        raise NotImplementedError  # pragma: no cover
+
+    def get_users(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
+        raise NotImplementedError  # pragma: no cover
+
+    def get_all(self, start_date: date, end_date: date) -> list[IncidentAnalytics]:
+        raise NotImplementedError  # pragma: no cover
