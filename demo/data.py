@@ -99,3 +99,12 @@ time_list = [
     {'id': 2300, 'hour': 23, 'minute': 0, 'part_of_day': 'Night'},
     {'id': 2400, 'hour': 0, 'minute': 0, 'part_of_day': 'Night'},
 ]
+
+ages_list = [
+    '20-29',
+    '30-39',
+    '40-49',
+    '50-59',
+    '60-69',
+    '70+',
+]
