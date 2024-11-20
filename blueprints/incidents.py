@@ -53,8 +53,6 @@ RISK_I18N = {
 }
 
 
-
-
 @dataclass
 class AnalyticsBody:
     startDate: date  # noqa: N815
@@ -83,8 +81,9 @@ class IncidentAnalytics(MethodView):
 
         return [{'values': [row[incident_field] for incident_field in data.fields]} for row in incidents]
 
-    def fact_users(self, data: AnalyticsBody, incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo]
-                   ) -> list[dict[str, Any]]:
+    def fact_users(
+        self, data: AnalyticsBody, incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo]
+    ) -> list[dict[str, Any]]:
         users = incident_repo.get_users(start_date=data.startDate, end_date=data.endDate)
 
         for row in users:

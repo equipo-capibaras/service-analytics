@@ -128,7 +128,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
 
     def get_all(self, start_date: date, end_date: date) -> list[IncidentAnalytics]:
         # Filtrar los incidentes según el rango de fechas usando comparaciones directas
-        incidents = (
+        return (
             self.db.session.query(IncidentAnalytics)
             .filter(
                 and_(
@@ -138,8 +138,6 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             )
             .all()
         )
-
-        return incidents
 
     def get_incidents(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
         # Filtrar los incidentes según el rango de fechas usando comparaciones directas
