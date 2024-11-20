@@ -3,7 +3,7 @@ from typing import Any
 
 from faker import Faker
 
-from demo import continent_contry_city_list, time_list, ages_list
+from demo import ages_list, continent_contry_city_list, time_list
 
 faker = Faker()
 
