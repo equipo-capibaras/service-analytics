@@ -6,8 +6,10 @@ class IncidentAnalytics(db.Model):
     __tablename__ = 'incident_analysis'
 
     id = db.Column(db.String(36), primary_key=True, nullable=False)
+    user_id = db.Column(db.String(36), nullable=False)
     user_name = db.Column(db.String(250), nullable=False)
     user_age = db.Column(db.Integer, nullable=False)
+    user_age_range = db.Column(db.String(50), nullable=False)
     user_city = db.Column(db.String(80), nullable=False)
     user_country = db.Column(db.String(80), nullable=False)
     user_continent = db.Column(db.String(80), nullable=False)
@@ -32,3 +34,4 @@ class IncidentAnalytics(db.Model):
     channel_type = db.Column(db.String(80), nullable=False)
     scaling_level = db.Column(db.Integer, nullable=False)
     resolution_time = db.Column(db.Integer, nullable=False)  # in hours
+    satisfaction = db.Column(db.Integer, nullable=False)
