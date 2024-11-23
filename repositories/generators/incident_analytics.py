@@ -1,4 +1,4 @@
-from datetime import date
+import datetime
 from typing import Any
 from uuid import uuid4
 
@@ -41,13 +41,16 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.TOTAL_PRODUCTS = 10
         self.TOTAL_USERS = 400
 
-    def populate_tables(self, entries: int) -> None:
+    def populate_tables(self) -> None:
+        start_date = datetime.date(2024, 9, 1)
+        end_date = datetime.datetime.now(tz=datetime.UTC).date()
+
         # Llenar las tablas de referencia
         self.agent_repo.populate_table(self.TOTAL_AGENTS)
         self.client_repo.populate_table(self.TOTAL_CLIENTS)
         self.product_repo.populate_table(self.TOTAL_PRODUCTS)
         self.user_repo.populate_table(self.TOTAL_USERS)
-        self.date_repo.populate_table(entries)
+        self.date_repo.populate_table(start_date, end_date)
         self.risk_repo.populate_table()
         self.time_repo.populate_table()
         self.channel_repo.populate_table()
@@ -69,11 +72,12 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.time_repo.delete_all_times()
         self.channel_repo.delete_all_channels()
 
-    def populate_incidents(self, entries: int) -> None:
+    def reset(self) -> None:
         # Llenar los incidentes analíticos
         self.clear_tables()
-        self.populate_tables(entries)
+        self.populate_tables()
 
+    def populate_incidents(self, entries: int) -> None:
         incidents = []
 
         for _ in range(entries):
@@ -126,7 +130,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.db.session.add_all(incidents)
         self.db.session.commit()
 
-    def get_all(self, start_date: date, end_date: date) -> list[IncidentAnalytics]:
+    def get_all(self, start_date: datetime.date, end_date: datetime.date) -> list[IncidentAnalytics]:
         # Filtrar los incidentes según el rango de fechas usando comparaciones directas
         return (
             self.db.session.query(IncidentAnalytics)
@@ -139,13 +143,13 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             .all()
         )
 
-    def get_incidents(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
+    def get_incidents(self, start_date: datetime.date, end_date: datetime.date) -> list[dict[str, Any]]:
         # Filtrar los incidentes según el rango de fechas usando comparaciones directas
         incidents = self.get_all(start_date, end_date)
 
         return [self.incident_to_dict(incident) for incident in incidents]
 
-    def get_users(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
+    def get_users(self, start_date: datetime.date, end_date: datetime.date) -> list[dict[str, Any]]:
         # Filtrar los usuarios según el rango de fechas usando comparaciones directas
         users = self.get_all(start_date, end_date)
 
