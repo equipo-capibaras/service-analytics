@@ -4,7 +4,7 @@ from typing import Any
 
 import marshmallow_dataclass
 from dependency_injector.wiring import Provide
-from flask import Blueprint, Response, current_app, request
+from flask import Blueprint, Response, request
 from flask.views import MethodView
 from marshmallow import ValidationError
 
@@ -70,10 +70,13 @@ class IncidentAnalytics(MethodView):
     init_every_request = False
 
     def fact_incidents(
-        self, data: AnalyticsBody, incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo]
+        self,
+        client_id: str,
+        data: AnalyticsBody,
+        incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo],
     ) -> list[dict[str, Any]]:
         # Get incidents from the repository based on the start and end dates
-        incidents = incident_repo.get_incidents(start_date=data.startDate, end_date=data.endDate)
+        incidents = incident_repo.get_incidents(client_id, start_date=data.startDate, end_date=data.endDate)
 
         for row in incidents:
             row['risk'] = RISK_I18N[data.language][row['risk']]
@@ -82,9 +85,12 @@ class IncidentAnalytics(MethodView):
         return [{'values': [row[incident_field] for incident_field in data.fields]} for row in incidents]
 
     def fact_users(
-        self, data: AnalyticsBody, incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo]
+        self,
+        client_id: str,
+        data: AnalyticsBody,
+        incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo],
     ) -> list[dict[str, Any]]:
-        users = incident_repo.get_users(start_date=data.startDate, end_date=data.endDate)
+        users = incident_repo.get_users(client_id, start_date=data.startDate, end_date=data.endDate)
 
         for row in users:
             row['channel'] = CHANNEL_I18N[data.language][row['channel']]
@@ -109,12 +115,10 @@ class IncidentAnalytics(MethodView):
         except ValidationError as err:
             return validation_error_response(err)
 
-        current_app.logger.info('Client: %s', token['cid'])
-
         if fact == 'incidents':
-            rows = self.fact_incidents(data)
+            rows = self.fact_incidents(token['cid'], data)
         elif fact == 'users':
-            rows = self.fact_users(data)
+            rows = self.fact_users(token['cid'], data)
         else:
             return error_response('Invalid fact', 400)
 
