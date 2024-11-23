@@ -1,3 +1,7 @@
+import datetime
+
+from models import Client, PlanEnum
+
 SOUTH_AMERICA = 'South America'
 continent_contry_city_list = [
     {'continent': SOUTH_AMERICA, 'country': 'Brazil', 'city': 'São Paulo'},
@@ -107,4 +111,28 @@ ages_list = [
     '50-59',
     '60-69',
     '70+',
+]
+
+client_list = [
+    Client(
+        id='acfa53b4-58f3-46e8-809b-19ef52b437ed',
+        name='Universo Móvel',
+        plan=PlanEnum.EMPRENDEDOR.value,
+        initial_date=datetime.date(2024, 10, 10),
+        final_date=datetime.date(2099, 1, 1),
+    ),
+    Client(
+        id='22128c04-0c2c-4633-8317-0fffd552f7a6',
+        name='GlobalCom',
+        plan=PlanEnum.EMPRESARIO.value,
+        initial_date=datetime.date(2024, 9, 15),
+        final_date=datetime.date(2099, 1, 1),
+    ),
+    Client(
+        id='9a652818-342e-4771-84cf-39c20a29264d',
+        name='GigaTel',
+        plan=PlanEnum.EMPRESARIO_PLUS.value,
+        initial_date=datetime.date(2024, 8, 27),
+        final_date=datetime.date(2099, 1, 1),
+    ),
 ]
