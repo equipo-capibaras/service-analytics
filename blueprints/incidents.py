@@ -141,3 +141,13 @@ class PopulateIncidents(MethodView):
         incident_repo.populate_incidents(data.entries)
 
         return json_response({'message': 'Incidents populated successfully'}, 200)
+
+
+@class_route(blp, '/api/v1/reset/analytics')
+class ResetDatabase(MethodView):
+    init_every_request = False
+
+    def post(self, incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo]) -> Response:
+        incident_repo.reset()
+
+        return json_response({'status': 'Ok'}, 200)

@@ -28,6 +28,9 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.app_ctx.pop()
 
     def test_populate_tables(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
         self.repository.populate_incidents(10)
 
@@ -37,8 +40,11 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.assertEqual(len(incidents), 10, f'Expected 10 incidents, but found {len(incidents)}')
 
     def test_delete_all_incident_analytics(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
-        self.repository.populate_tables(10)
+        self.repository.populate_incidents(10)
 
         # Eliminamos todas las entradas
         self.repository.delete_all_incident_analytics()
@@ -48,6 +54,9 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.assertEqual(incidents_count, 0, f'Expected 0 incidents, but found {incidents_count}')
 
     def test_get_all_incidents_in_date_range(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
         self.repository.populate_incidents(10)
 
@@ -62,6 +71,9 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.assertEqual(len(incidents), 10, f'Expected 10 incidents in date range, but found {len(incidents)}')
 
     def test_get_incidents_filtered(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
         self.repository.populate_incidents(10)
 
@@ -77,6 +89,9 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.assertIsInstance(incidents[0], dict, 'Expected incident to be a dictionary')
 
     def test_get_users_filtered(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
         self.repository.populate_incidents(10)
 
@@ -93,6 +108,9 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.assertIn('userId', users[0], 'Expected user dictionary to contain userId key')
 
     def test_clear_tables(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
         self.repository.populate_incidents(10)
 

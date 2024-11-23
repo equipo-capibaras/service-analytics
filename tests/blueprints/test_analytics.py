@@ -51,6 +51,13 @@ class TestIncidents(ParametrizedTestCase):
             content_type='application/json',
         )
 
+    def call_reset_api(self) -> TestResponse:
+        return self.client.post(
+            '/api/v1/reset/analytics',
+            data='{}',
+            content_type='application/json',
+        )
+
     @parametrize(
         'missing_field',
         [
@@ -230,9 +237,26 @@ class TestIncidents(ParametrizedTestCase):
 
     def test_populate_incidents(self) -> None:
         body = {'entries': 10}
-        resp = self.call_populate_api(body)
+
+        analytics_repo_mock = Mock(IncidentAnalyticsRepository)
+        with self.app.container.incidents_repo.override(analytics_repo_mock):
+            resp = self.call_populate_api(body)
+
+        cast(Mock, analytics_repo_mock.populate_incidents).assert_called_once_with(10)
 
         self.assertEqual(resp.status_code, 200)
         resp_data = json.loads(resp.get_data())
 
         self.assertEqual(resp_data['message'], 'Incidents populated successfully')
+
+    def test_reset(self) -> None:
+        analytics_repo_mock = Mock(IncidentAnalyticsRepository)
+        with self.app.container.incidents_repo.override(analytics_repo_mock):
+            resp = self.call_reset_api()
+
+        cast(Mock, analytics_repo_mock.reset).assert_called_once()
+
+        self.assertEqual(resp.status_code, 200)
+        resp_data = json.loads(resp.get_data())
+
+        self.assertEqual(resp_data['status'], 'Ok')

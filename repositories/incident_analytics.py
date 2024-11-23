@@ -8,7 +8,10 @@ class IncidentAnalyticsRepository:
     def clear_tables(self) -> None:
         raise NotImplementedError  # pragma: no cover
 
-    def populate_tables(self, entries: int) -> None:
+    def populate_tables(self) -> None:
+        raise NotImplementedError  # pragma: no cover
+
+    def reset(self) -> None:
         raise NotImplementedError  # pragma: no cover
 
     def populate_incidents(self, entries: int) -> None:
