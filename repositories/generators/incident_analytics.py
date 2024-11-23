@@ -120,7 +120,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
                 agent_name=agent.name,
                 agent_experience=agent.experience,
                 channel_type=channel.channel_type.value,
-                scaling_level=self.faker.random_int(min=1, max=10),
+                scaling_level=self.faker.random_int(min=1, max=5),
                 resolution_time=self.faker.random_int(min=1, max=30),
                 satisfaction=self.faker.random_int(min=1, max=10),
             )
