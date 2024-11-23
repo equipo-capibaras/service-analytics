@@ -37,8 +37,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
 
         # Configuración para el número de entidades a generar
         self.TOTAL_AGENTS = 20
-        self.TOTAL_CLIENTS = 10
-        self.TOTAL_PRODUCTS = 10
+        self.TOTAL_PRODUCTS = 5
         self.TOTAL_USERS = 400
 
     def populate_tables(self) -> None:
@@ -47,7 +46,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
 
         # Llenar las tablas de referencia
         self.agent_repo.populate_table(self.TOTAL_AGENTS)
-        self.client_repo.populate_table(self.TOTAL_CLIENTS)
+        self.client_repo.populate_table()
         self.product_repo.populate_table(self.TOTAL_PRODUCTS)
         self.user_repo.populate_table(self.TOTAL_USERS)
         self.date_repo.populate_table(start_date, end_date)
@@ -102,6 +101,7 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
                 user_country=user.country,
                 user_continent=user.continent,
                 user_language=user.language,
+                client_id=client.id,
                 client_name=client.name,
                 client_plan=client.plan.value,
                 product_name=product.name,

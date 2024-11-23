@@ -14,6 +14,7 @@ class IncidentAnalytics(db.Model):
     user_country = db.Column(db.String(80), nullable=False)
     user_continent = db.Column(db.String(80), nullable=False)
     user_language = db.Column(db.String(80), nullable=False)
+    client_id = db.Column(db.String(36), nullable=False)
     client_name = db.Column(db.String(80), nullable=False)
     client_plan = db.Column(db.String(80), nullable=False)
     product_name = db.Column(db.String(80), nullable=False)
