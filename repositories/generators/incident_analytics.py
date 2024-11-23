@@ -130,12 +130,13 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
         self.db.session.add_all(incidents)
         self.db.session.commit()
 
-    def get_all(self, start_date: datetime.date, end_date: datetime.date) -> list[IncidentAnalytics]:
+    def get_all(self, client_id: str, start_date: datetime.date, end_date: datetime.date) -> list[IncidentAnalytics]:
         # Filtrar los incidentes según el rango de fechas usando comparaciones directas
         return (
             self.db.session.query(IncidentAnalytics)
             .filter(
                 and_(
+                    IncidentAnalytics.client_id == client_id,
                     IncidentAnalytics.date >= start_date,
                     IncidentAnalytics.date <= end_date,
                 )
@@ -143,15 +144,15 @@ class GeneratorIncidentAnalyticsRepository(IncidentAnalyticsRepository):
             .all()
         )
 
-    def get_incidents(self, start_date: datetime.date, end_date: datetime.date) -> list[dict[str, Any]]:
+    def get_incidents(self, client_id: str, start_date: datetime.date, end_date: datetime.date) -> list[dict[str, Any]]:
         # Filtrar los incidentes según el rango de fechas usando comparaciones directas
-        incidents = self.get_all(start_date, end_date)
+        incidents = self.get_all(client_id, start_date, end_date)
 
         return [self.incident_to_dict(incident) for incident in incidents]
 
-    def get_users(self, start_date: datetime.date, end_date: datetime.date) -> list[dict[str, Any]]:
+    def get_users(self, client_id: str, start_date: datetime.date, end_date: datetime.date) -> list[dict[str, Any]]:
         # Filtrar los usuarios según el rango de fechas usando comparaciones directas
-        users = self.get_all(start_date, end_date)
+        users = self.get_all(client_id, start_date, end_date)
 
         return [self.user_to_dict(user) for user in users]
 
