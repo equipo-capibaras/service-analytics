@@ -4,7 +4,7 @@ from typing import Any
 
 import marshmallow_dataclass
 from dependency_injector.wiring import Provide
-from flask import Blueprint, Response, current_app, request
+from flask import Blueprint, Response, request
 from flask.views import MethodView
 from marshmallow import ValidationError
 
@@ -65,13 +65,43 @@ class PopulateTableBody:
     entries: int
 
 
-@class_route(blp, '/api/v1/analytics/incidents')
+@class_route(blp, '/api/v1/analytics/<string:fact>')
 class IncidentAnalytics(MethodView):
     init_every_request = False
 
+    def fact_incidents(
+        self,
+        client_id: str,
+        data: AnalyticsBody,
+        incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo],
+    ) -> list[dict[str, Any]]:
+        # Get incidents from the repository based on the start and end dates
+        incidents = incident_repo.get_incidents(client_id, start_date=data.startDate, end_date=data.endDate)
+
+        for row in incidents:
+            row['risk'] = RISK_I18N[data.language][row['risk']]
+            row['channel'] = CHANNEL_I18N[data.language][row['channel']]
+
+        return [{'values': [row[incident_field] for incident_field in data.fields]} for row in incidents]
+
+    def fact_users(
+        self,
+        client_id: str,
+        data: AnalyticsBody,
+        incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo],
+    ) -> list[dict[str, Any]]:
+        users = incident_repo.get_users(client_id, start_date=data.startDate, end_date=data.endDate)
+
+        for row in users:
+            row['channel'] = CHANNEL_I18N[data.language][row['channel']]
+
+        return [{'values': [row[field] for field in data.fields]} for row in users]
+
     @requires_token
     def post(
-        self, token: dict[str, Any], incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo]
+        self,
+        token: dict[str, Any],
+        fact: str,
     ) -> Response:
         client_schema = marshmallow_dataclass.class_schema(AnalyticsBody)()
         req_json = request.get_json(silent=True)
@@ -85,16 +115,12 @@ class IncidentAnalytics(MethodView):
         except ValidationError as err:
             return validation_error_response(err)
 
-        # Get incidents from the repository based on the start and end dates
-        incidents = incident_repo.get_incidents(start_date=data.startDate, end_date=data.endDate)
-
-        current_app.logger.info('Client: %s', token['cid'])
-
-        for row in incidents:
-            row['risk'] = RISK_I18N[data.language][row['risk']]
-            row['channel'] = CHANNEL_I18N[data.language][row['channel']]
-
-        rows = [{'values': [row[incident_field] for incident_field in data.fields]} for row in incidents]
+        if fact == 'incidents':
+            rows = self.fact_incidents(token['cid'], data)
+        elif fact == 'users':
+            rows = self.fact_users(token['cid'], data)
+        else:
+            return error_response('Invalid fact', 400)
 
         return json_response({'rows': rows}, 200)
 
@@ -119,3 +145,13 @@ class PopulateIncidents(MethodView):
         incident_repo.populate_incidents(data.entries)
 
         return json_response({'message': 'Incidents populated successfully'}, 200)
+
+
+@class_route(blp, '/api/v1/reset/analytics')
+class ResetDatabase(MethodView):
+    init_every_request = False
+
+    def post(self, incident_repo: IncidentAnalyticsRepository = Provide[Container.incidents_repo]) -> Response:
+        incident_repo.reset()
+
+        return json_response({'status': 'Ok'}, 200)

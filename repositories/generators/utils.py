@@ -3,7 +3,7 @@ from typing import Any
 
 from faker import Faker
 
-from demo import continent_contry_city_list, time_list
+from demo import ages_list, continent_contry_city_list, time_list
 
 faker = Faker()
 
@@ -18,7 +18,7 @@ def get_random_sex() -> str:
 
 
 def get_random_languaje() -> str:
-    return secrets.choice(['es', 'en', 'pt'])
+    return secrets.choice(['Portugués (Brasil)', 'Español (Colombia)', 'Español (Argentina)'])
 
 
 def get_random_time() -> dict[str, Any]:
@@ -36,3 +36,7 @@ def get_initial_final_date() -> dict[str, Any]:
     final_date = faker.date_between_dates(date_start=initial_date, date_end=None)
 
     return {'initial_date': initial_date, 'final_date': final_date}
+
+
+def get_random_age_range() -> str:
+    return secrets.choice(ages_list)

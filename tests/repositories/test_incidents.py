@@ -1,9 +1,11 @@
+from datetime import date
 from unittest import TestCase
 
 from faker import Faker
 
 from app import create_app
 from db import db
+from demo import client_list
 from models import IncidentAnalytics
 from repositories.generators import GeneratorIncidentAnalyticsRepository
 
@@ -27,6 +29,9 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.app_ctx.pop()
 
     def test_populate_tables(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
         self.repository.populate_incidents(10)
 
@@ -36,8 +41,11 @@ class TestIncidentAnalyticsRepository(TestCase):
         self.assertEqual(len(incidents), 10, f'Expected 10 incidents, but found {len(incidents)}')
 
     def test_delete_all_incident_analytics(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
         # Poblamos las tablas con 10 entradas
-        self.repository.populate_tables(10)
+        self.repository.populate_incidents(10)
 
         # Eliminamos todas las entradas
         self.repository.delete_all_incident_analytics()
@@ -45,3 +53,83 @@ class TestIncidentAnalyticsRepository(TestCase):
         # Comprobamos que no haya entradas en la tabla de IncidentAnalytics
         incidents_count = IncidentAnalytics.query.count()
         self.assertEqual(incidents_count, 0, f'Expected 0 incidents, but found {incidents_count}')
+
+    def test_get_all_incidents_in_date_range(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
+        # Poblamos las tablas con 10 entradas
+        self.repository.populate_incidents(10)
+
+        # Definimos un rango de fechas para buscar los incidentes
+        start_date = date(2024, 9, 1)
+        end_date = date(2024, 11, 30)
+
+        client = client_list[0]
+
+        expected = db.session.query(IncidentAnalytics).filter(IncidentAnalytics.client_id == client.id).count()
+
+        # Obtenemos los incidentes en el rango de fechas
+        incidents = self.repository.get_all(client.id, start_date, end_date)
+
+        # Comprobamos que se devuelvan incidentes
+        self.assertEqual(len(incidents), expected, f'Expected {expected} incidents in date range, but found {len(incidents)}')
+
+    def test_get_incidents_filtered(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
+        # Poblamos las tablas con 10 entradas
+        self.repository.populate_incidents(10)
+
+        # Definimos un rango de fechas para buscar los incidentes
+        start_date = date(2024, 9, 1)
+        end_date = date(2024, 11, 30)
+
+        client = client_list[0]
+
+        expected = db.session.query(IncidentAnalytics).filter(IncidentAnalytics.client_id == client.id).count()
+
+        # Obtenemos los incidentes en el rango de fechas
+        incidents = self.repository.get_incidents(client.id, start_date, end_date)
+
+        # Comprobamos que se devuelvan incidentes como diccionarios
+        self.assertEqual(len(incidents), expected, f'Expected {expected} incidents in date range, but found {len(incidents)}')
+        self.assertIsInstance(incidents[0], dict, 'Expected incident to be a dictionary')
+
+    def test_get_users_filtered(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
+        # Poblamos las tablas con 10 entradas
+        self.repository.populate_incidents(10)
+
+        # Definimos un rango de fechas para buscar los usuarios
+        start_date = date(2024, 9, 1)
+        end_date = date(2024, 11, 30)
+
+        client = client_list[0]
+
+        expected = db.session.query(IncidentAnalytics).filter(IncidentAnalytics.client_id == client.id).count()
+
+        # Obtenemos los usuarios en el rango de fechas
+        users = self.repository.get_users(client.id, start_date, end_date)
+
+        # Comprobamos que se devuelvan usuarios como diccionarios
+        self.assertEqual(len(users), expected, f'Expected {expected} users in date range, but found {len(users)}')
+        self.assertIsInstance(users[0], dict, 'Expected user to be a dictionary')
+        self.assertIn('userId', users[0], 'Expected user dictionary to contain userId key')
+
+    def test_clear_tables(self) -> None:
+        # Preparar las tablas
+        self.repository.reset()
+
+        # Poblamos las tablas con 10 entradas
+        self.repository.populate_incidents(10)
+
+        # Limpiamos todas las tablas
+        self.repository.clear_tables()
+
+        # Comprobamos que no haya entradas en la tabla de IncidentAnalytics
+        incidents_count = IncidentAnalytics.query.count()
+        self.assertEqual(incidents_count, 0, f'Expected 0 incidents after clearing tables, but found {incidents_count}')

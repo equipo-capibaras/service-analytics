@@ -1,5 +1,5 @@
+import datetime
 import secrets
-from datetime import UTC, datetime
 from uuid import uuid4
 
 from faker import Faker
@@ -14,14 +14,13 @@ class GeneratorDateRepository:
         self.faker = Faker()
         self.db = db
 
-    def populate_table(self, entries: int) -> None:
+    def populate_table(self, start_date: datetime.date, end_date: datetime.date) -> None:
         dates = []
 
-        start_date = datetime(2024, 9, 1, tzinfo=UTC)
-        end_date = datetime(2024, 11, 30, tzinfo=UTC)
+        num_days = (end_date - start_date).days + 1
 
-        for _ in range(entries):
-            generated_date = self.faker.date_between(start_date=start_date, end_date=end_date)
+        for i in range(num_days):
+            generated_date = start_date + datetime.timedelta(days=i)
             date = Date(
                 id=str(uuid4()),
                 date=generated_date,

@@ -2,7 +2,7 @@ from models import Client
 
 
 class ClientRepository:
-    def populate_table(self, entries: int) -> None:
+    def populate_table(self) -> None:
         raise NotImplementedError  # pragma: no cover
 
     def get_random_client(self) -> Client:
